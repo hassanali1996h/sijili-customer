@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "سِجلي",
+    "slug": "sijili-customer",
+    "scheme": "debtledger-customer",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-notifications"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.debtledgeriq.sijili",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.debtledgeriq.sijili",
+      "edgeToEdgeEnabled": true
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "3fe77bf8-4c73-471c-bebc-810aa40d51bc"
+      }
+    },
+    "owner": "hassanali22"
+  }
+}
+
