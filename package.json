@@ -1,0 +1,34 @@
+{
+  "name": "sijili-customer",
+  "private": true,
+  "version": "0.1.0",
+  "engines": {
+    "node": "^22.13.0 || ^24.3.0 || >=26.0.0"
+  },
+  "workspaces": [
+    "apps/customer",
+    "packages/*"
+  ],
+  "scripts": {
+    "start:merchant": "npm run start --workspace @debt/merchant",
+    "start:customer": "npm run start --workspace @debt/customer",
+    "android:merchant": "npm run android --workspace @debt/merchant",
+    "android:customer": "npm run android --workspace @debt/customer",
+    "ios:merchant": "npm run ios --workspace @debt/merchant",
+    "ios:customer": "npm run ios --workspace @debt/customer",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:test": "supabase test db",
+    "db:lint": "supabase db lint --local"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "supabase": "3.2.0"
+  }
+}
+
