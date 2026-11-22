@@ -44,3 +44,33 @@ test('blocks a similarly prefixed but incorrect ID', () => {
   assert.equal(result.status, 1);
   assert.match(result.stderr, /BLOCKED/);
 });
+
+
+test('blocks a malformed Expo configuration without an unhandled stack trace', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sijili-invalid-'));
+  try {
+    const file = path.join(dir, 'app.json');
+    fs.writeFileSync(file, '{invalid');
+    const result = spawnSync(process.execPath, [checker], {
+      encoding: 'utf8',
+      env: { ...process.env, SIJILI_APP_JSON: file },
+    });
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /BLOCKED: Cannot read a valid Expo app.json/);
+    assert.match(result.stderr, /Invalid or unreadable configuration/);
+    assert.doesNotMatch(result.stderr, /SyntaxError:/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('blocks an absent Expo configuration with actionable diagnostics', () => {
+  const file = path.join(os.tmpdir(), 'sijili-missing-' + process.pid, 'app.json');
+  const result = spawnSync(process.execPath, [checker], {
+    encoding: 'utf8',
+    env: { ...process.env, SIJILI_APP_JSON: file },
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /BLOCKED: Cannot read a valid Expo app.json/);
+  assert.match(result.stderr, /Configuration file missing/);
+});
