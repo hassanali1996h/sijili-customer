@@ -9,9 +9,9 @@ const source = fs.readFileSync(path.join(__dirname, '../packages/shared/src/phon
 const compiled = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
 }).outputText;
-const exports = {};
-vm.runInNewContext(compiled, { exports });
-const { normalizeIraqiPhone, toAsciiDigits } = exports;
+const moduleExports = {};
+vm.runInNewContext(compiled, { exports: moduleExports });
+const { normalizeIraqiPhone, toAsciiDigits } = moduleExports;
 
 assert.equal(toAsciiDigits('٠١٢٣٤٥٦٧٨٩ ۰۱۲۳۴۵۶۷۸۹'), '0123456789 0123456789');
 
