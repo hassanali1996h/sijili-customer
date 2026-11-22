@@ -43,9 +43,24 @@ for file in "${tests[@]}"; do
     echo "pgTAP assertion failed: $(basename "$file")" >&2
     exit 1
   fi
-  if ! grep -Eq '^[[:space:]]*ok[[:space:]]+[0-9]+' "$output" || ! grep -Eq '^[[:space:]]*1\.\.[0-9]+' "$output"; then
+  # Reject truncated TAP output: require a single plan and all numbered assertions.
+  if ! awk '
+    /^[[:space:]]*1\\.\\.[0-9]+[[:space:]]*$/ {
+      if (++plans != 1) bad = 1
+      split($1, parts, /\\.\\./)
+      expected = parts[2] + 0
+      if (expected < 1) bad = 1
+      next
+    }
+    /^[[:space:]]*ok[[:space:]]+[0-9]+([[:space:]]|$)/ {
+      seen++
+      if ($2 + 0 != seen) bad = 1
+      next
+    }
+    END { if (bad || plans != 1 || seen != expected) exit 1 }
+  ' "$output"; then
     rm -f "$output"
-    echo "Missing pgTAP plan or passing assertions: $(basename "$file")" >&2
+    echo "Incomplete or inconsistent pgTAP assertion count: $(basename "$file")" >&2
     exit 1
   fi
   rm -f "$output"
