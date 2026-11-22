@@ -12,6 +12,15 @@ export function toAsciiDigits(value: string): string {
  * or E.164 (+9647...) form. Never silently transform a foreign number into
  * an Iraqi one; OTP delivery must use the verified E.164 destination.
  */
+/**
+ * Normalize SMS verification codes entered with Arabic, Kurdish or Latin digits.
+ * This is input validation only; Supabase Auth remains authoritative.
+ */
+export function normalizePhoneOtp(raw: string): string {
+  const code = toAsciiDigits(raw).replace(/\s/g, '');
+  return /^\d{4,9}$/.test(code) ? code : '';
+}
+
 export function normalizeIraqiPhone(raw: string): string {
   const input = toAsciiDigits(raw.trim());
   if (!input || /[^\d+\s().-]/.test(input)) return '';

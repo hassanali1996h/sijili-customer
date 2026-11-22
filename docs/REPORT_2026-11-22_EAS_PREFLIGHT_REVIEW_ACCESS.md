@@ -6,7 +6,8 @@
 - Restored the existing project's canonical slug without changing its project ID or creating a duplicate project.
 - Prior `preview-connected` Android builds (2026-11-19) ended with errors during dependency installation. Their precise root cause has **not** been established from the available logs. Older demo `preview` APKs succeeded; these are not proof of connected or store-ready builds.
 - Added `scripts/verify-eas-config.cjs` and a CI step. The script checks owner, slug, EAS project ID, Play Console Android package, and the preview / store Android build profile boundaries.
-- Successfully ran `node scripts/verify-eas-config.cjs`, `node scripts/test-phone.cjs` (22 assertions), `npm run typecheck`, and `git diff --check` locally.
+- Successfully ran `node scripts/verify-eas-config.cjs`, `node scripts/test-phone.cjs` (33 assertions including nine-digit OTP input), `npm run typecheck`, and `git diff --check` locally.
+- The client input now allows four to nine OTP digits, including Eastern Arabic/Persian digits, but Supabase still verifies every code on the server. A nine-digit reviewer code has NOT been verified to work with the configured Auth service.
 - No new AAB build, Google Play upload, live purchase, or production database write was performed.
 
 ## Google Play reviewer access — pending verification

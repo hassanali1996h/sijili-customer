@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { normalizeIraqiPhone, toAsciiDigits } from './phone';
+import { normalizeIraqiPhone, normalizePhoneOtp } from './phone';
 import { palette, radii } from './theme';
 
 type Props = {
@@ -97,8 +97,8 @@ export function PhoneAuth({ languageControl, signInAvailable, previewMode = fals
 
   async function verifyCode() {
     if (pending.current || !sent || !normalizedPhone) return;
-    const normalizedCode = toAsciiDigits(code).replace(/\s/g, '');
-    if (!/^\d{4,8}$/.test(normalizedCode)) {
+    const normalizedCode = normalizePhoneOtp(code);
+    if (!normalizedCode) {
       setErrorKey('auth.invalidCode');
       return;
     }
@@ -173,7 +173,7 @@ export function PhoneAuth({ languageControl, signInAvailable, previewMode = fals
                   style={[styles.input, styles.codeInput]}
                   placeholder="••••••"
                   placeholderTextColor="#AAB4AD"
-                  maxLength={8}
+                  maxLength={9}
                   autoComplete="one-time-code"
                   textContentType="oneTimeCode"
                   editable={!busy}
