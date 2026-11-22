@@ -75,9 +75,10 @@ select is(
 
 set local request.jwt.claim.sub = '85000000-0000-4000-8000-000000000003';
 select throws_ok(
- $$select public.respond_to_transaction(
- '85000000-0000-4000-8000-000000000021', 'approve',
- '85000000-0000-4000-8000-000000000023')$$,
+ $select public.respond_to_transaction(
+ (select id from public.ledger_transactions
+  where idempotency_key = '85000000-0000-4000-8000-000000000021'),
+ 'approve', '85000000-0000-4000-8000-000000000023')$,
  'P0001', 'Transaction not found or not authorized',
  'unrelated user cannot approve the debt'
 );
