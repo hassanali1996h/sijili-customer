@@ -73,11 +73,14 @@ select is(
  1::bigint, 'rejected debt leaves the ledger unchanged'
 );
 
+create temporary table fixture_transaction_id on commit drop as
+select id from public.ledger_transactions
+where idempotency_key = '85000000-0000-4000-8000-000000000021';
+
 set local request.jwt.claim.sub = '85000000-0000-4000-8000-000000000003';
 select throws_ok(
  $select public.respond_to_transaction(
- (select id from public.ledger_transactions
-  where idempotency_key = '85000000-0000-4000-8000-000000000021'),
+ (select id from fixture_transaction_id),
  'approve', '85000000-0000-4000-8000-000000000023')$,
  'P0001', 'Transaction not found or not authorized',
  'unrelated user cannot approve the debt'
