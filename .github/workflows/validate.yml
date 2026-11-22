@@ -28,5 +28,7 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Test Iraqi phone normalization
         run: node scripts/test-phone.cjs
+      - name: Verify Expo and EAS application identifiers
+        run: node scripts/verify-eas-config.cjs
       - name: Type-check workspaces
         run: npm run typecheck
