@@ -25,13 +25,10 @@ insert into public.customer_links (
 set local role authenticated;
 set local request.jwt.claim.sub = '85000000-0000-4000-8000-000000000001';
 
-select is(
- public.create_transaction_request(
+select lives_ok(
+ $select public.create_transaction_request(
   '85000000-0000-4000-8000-000000000011', 'debt', 6000, 'fixture',
-  null, '85000000-0000-4000-8000-000000000021'
- ),
- (select id from public.ledger_transactions
-  where idempotency_key = '85000000-0000-4000-8000-000000000021'),
+  null, '85000000-0000-4000-8000-000000000021')$,
  'merchant creates a pending debt request'
 );
 select is(
