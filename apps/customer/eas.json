@@ -1,16 +1,31 @@
 {
-  "cli": { "appVersionSource": "local" },
+  "cli": {
+    "appVersionSource": "local"
+  },
   "build": {
     "preview": {
       "distribution": "internal",
       "environment": "preview",
-      "env": { "EXPO_PUBLIC_DEBT_LEDGER_PREVIEW": "1" },
-      "android": { "buildType": "apk" }
+      "env": {
+        "EXPO_PUBLIC_DEBT_LEDGER_PREVIEW": "1"
+      },
+      "android": {
+        "buildType": "apk"
+      }
     },
     "preview-connected": {
       "extends": "preview",
-      "env": { "EXPO_PUBLIC_DEBT_LEDGER_PREVIEW": "0" }
+      "env": {
+        "EXPO_PUBLIC_DEBT_LEDGER_PREVIEW": "0"
+      }
+    },
+    "production": {
+      "environment": "production",
+      "distribution": "store",
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      }
     }
   }
 }
-
