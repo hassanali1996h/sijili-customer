@@ -17,7 +17,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.debtledgeriq.sijili",
+      "package": "com.debtledgeriq.sijili.customer",
       "edgeToEdgeEnabled": true
     },
     "experiments": {
